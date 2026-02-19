@@ -131,8 +131,10 @@ This application fully implements all assessment requirements:
 - ✅ **Hand-coded validation** (no validation libraries used)
 - ✅ **API integration** with TanStack Start server functions
 - ✅ **Success handling** with redirect and personalized success message
-- ✅ **Error handling** with retry functionality (30% random failure rate for demo)
+- ✅ **Error handling** with retry functionality
 - ✅ **Stub server** using TanStack Start (no Express.js needed)
+
+> **⚠️ Note on Error Handling Demo:** The API is intentionally configured to fail randomly **30% of the time** to demonstrate robust error handling and retry functionality. This simulates real-world network issues and allows showcasing the application's resilience and user-friendly error recovery mechanisms.
 
 
 -
@@ -195,6 +197,8 @@ npm run test:ui
 ### Current Approach: Tailwind CSS
 
 We used **Tailwind CSS** for styling to meet the assessment's time constraints and "UI styling is not important" guideline.
+
+> **📝 Note on Component Extraction:** This project demonstrates a **minimal component extraction approach** to showcase the direction and potential for reusable UI components. Many elements like buttons, inputs, radio buttons, and other form controls remain inline without dedicated component abstractions. In a production application, these would be extracted into a comprehensive component library for consistency, maintainability, and reusability across the codebase.
 
 ### Production Recommendation: UI Library
 
