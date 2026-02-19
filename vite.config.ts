@@ -16,4 +16,9 @@ export default defineConfig({
     tanstackStart(),
     viteReact(),
   ],
+  test: {
+    globals: true,
+    environment: 'jsdom',
+    setupFiles: [],
+  },
 })
