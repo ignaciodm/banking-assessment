@@ -1,12 +1,16 @@
-import { createFileRoute } from '@tanstack/react-router'
+import { createFileRoute, Link } from '@tanstack/react-router'
+
 export const Route = createFileRoute('/')({
-  component: Home,
+  component: HomePage,
 })
 
-function Home() {
+function HomePage() {
   return (
     <div className="p-2">
-      <h3>Welcome Home!!!</h3>
+      <h1>Welcome to Banking App</h1>
+      <div className="mt-4">
+        <Link to="/create-account">Open a bank account</Link>
+      </div>
     </div>
   )
 }
