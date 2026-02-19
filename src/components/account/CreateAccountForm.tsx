@@ -3,6 +3,7 @@ import type { CreateAccountFormData } from '~/types/account';
 import { FormField } from '~/components/common/FormField';
 import { useFormValidation } from '~/hooks/useFormValidation';
 import { validateAccountForm } from '~/utils/accountValidation';
+import { useCreateAccount } from '~/hooks/useCreateAccount';
 
 export function CreateAccountForm() {
   const { register, handleSubmit, watch } = useForm<CreateAccountFormData>({
@@ -21,6 +22,8 @@ export function CreateAccountForm() {
     markAsSubmitted,
   } = useFormValidation<CreateAccountFormData>();
 
+  const { mutate: createAccount, isPending } = useCreateAccount();
+
   const accountType = watch('accountType');
 
   const onSubmit = (data: CreateAccountFormData) => {
@@ -35,8 +38,12 @@ export function CreateAccountForm() {
 
     clearAllErrors();
 
-    // TODO: Implement API call with React Query in next commit
-    console.log('Form submitted:', data);
+    // Call the API using React Query mutation
+    createAccount({
+      nickname: data.nickname,
+      accountType: data.accountType,
+      savingsGoal: data.savingsGoal,
+    });
   };
 
   return (
@@ -55,12 +62,13 @@ export function CreateAccountForm() {
             onChange: () => clearFieldError('nickname'),
           })}
           className="w-full px-3 py-2 border border-gray-300 rounded"
+          disabled={isPending}
         />
       </FormField>
 
       {/* Account Type Radio Buttons */}
       <div className="form-field">
-        <fieldset>
+        <fieldset disabled={isPending}>
           <legend className="block mb-2">Account Type</legend>
           <div className="space-y-2">
             <label className="flex items-center gap-2">
@@ -100,6 +108,7 @@ export function CreateAccountForm() {
             })}
             className="w-full px-3 py-2 border border-gray-300 rounded"
             placeholder="Enter amount"
+            disabled={isPending}
           />
         </FormField>
       )}
@@ -107,9 +116,10 @@ export function CreateAccountForm() {
       {/* Submit Button */}
       <button
         type="submit"
-        className="w-full px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
+        disabled={isPending}
+        className="w-full px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 disabled:bg-blue-300 disabled:cursor-not-allowed"
       >
-        Create Account
+        {isPending ? 'Creating Account...' : 'Create Account'}
       </button>
     </form>
   );
