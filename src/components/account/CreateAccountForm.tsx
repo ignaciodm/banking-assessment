@@ -1,6 +1,7 @@
 import { useForm } from 'react-hook-form';
 import type { CreateAccountFormData } from '~/types/account';
 import { FormField } from '~/components/common/FormField';
+import { Alert } from '~/components/common/Alert';
 import { useFormValidation } from '~/hooks/useFormValidation';
 import { validateAccountForm } from '~/utils/accountValidation';
 import { useCreateAccount } from '~/hooks/useCreateAccount';
@@ -22,7 +23,7 @@ export function CreateAccountForm() {
     markAsSubmitted,
   } = useFormValidation<CreateAccountFormData>();
 
-  const { mutate: createAccount, isPending } = useCreateAccount();
+  const { mutate: createAccount, isPending, isError, error, reset } = useCreateAccount();
 
   const accountType = watch('accountType');
 
@@ -38,6 +39,9 @@ export function CreateAccountForm() {
 
     clearAllErrors();
 
+    // Clear any previous API errors before retrying
+    reset();
+
     // Call the API using React Query mutation
     createAccount({
       nickname: data.nickname,
@@ -48,6 +52,11 @@ export function CreateAccountForm() {
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-6 max-w-md">
+      {/* API Error Message */}
+      {isError && error && (
+        <Alert variant="error" message={error.message} />
+      )}
+
       {/* Account Nickname Field */}
       <FormField
         label="Account Nickname"
@@ -119,7 +128,7 @@ export function CreateAccountForm() {
         disabled={isPending}
         className="w-full px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 disabled:bg-blue-300 disabled:cursor-not-allowed"
       >
-        {isPending ? 'Creating Account...' : 'Create Account'}
+        {isPending ? 'Creating Account...' : isError ? 'Retry' : 'Create Account'}
       </button>
     </form>
   );

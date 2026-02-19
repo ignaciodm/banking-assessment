@@ -6,6 +6,7 @@ import { useAccountContext } from '~/contexts/AccountContext';
 
 /**
  * React Query hook for creating a bank account
+ * Handles success and error states gracefully
  */
 export function useCreateAccount() {
   const navigate = useNavigate();
@@ -19,11 +20,12 @@ export function useCreateAccount() {
       // Set success message in context
       setCreatedAccount(data.account);
       
-      // Navigate to homepage
+      // Navigate to homepage only on success
       navigate({ to: '/', replace: true });
     },
     onError: (error) => {
-      // TODO: In production, implement proper error handling
+      // Error is handled in the component via error state
+      // Do NOT navigate on error - stay on the form page
       console.error('Failed to create account:', error);
     },
   });
