@@ -11,9 +11,10 @@ export interface ValidationRule<T = any> {
 
 /**
  * Validates that a value is not empty
+ * Handles NaN for number inputs
  */
 export function validateRequired(value: any, message = 'This field is required'): ValidationResult {
-  if (value === undefined || value === null || value === '') {
+  if (value === undefined || value === null || value === '' || Number.isNaN(value)) {
     return message;
   }
   return undefined;
@@ -49,7 +50,7 @@ export function validateMaxNumber(
   max: number,
   message?: string
 ): ValidationResult {
-  if (value === undefined || value === null) return undefined;
+  if (value === undefined || value === null || Number.isNaN(value)) return undefined;
 
   if (value > max) {
     return message || `Cannot exceed ${max.toLocaleString()}`;
@@ -66,7 +67,7 @@ export function validateMinNumber(
   min: number,
   message?: string
 ): ValidationResult {
-  if (value === undefined || value === null) return undefined;
+  if (value === undefined || value === null || Number.isNaN(value)) return undefined;
 
   if (value < min) {
     return message || `Must be at least ${min.toLocaleString()}`;

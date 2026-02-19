@@ -19,6 +19,7 @@ describe('validateRequired', () => {
     [undefined, 'This field is required', 'undefined value'],
     [null, 'This field is required', 'null value'],
     ['', 'This field is required', 'empty string'],
+    [NaN, 'This field is required', 'NaN value'],
     ['  ', undefined, 'whitespace string (not empty)'],
     ['valid', undefined, 'valid string'],
     [0, undefined, 'zero number'],
