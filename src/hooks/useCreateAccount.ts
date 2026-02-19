@@ -9,7 +9,7 @@ import { useAccountContext } from '~/contexts/AccountContext';
  */
 export function useCreateAccount() {
   const navigate = useNavigate();
-  const { setSuccessMessage } = useAccountContext();
+  const { setCreatedAccount } = useAccountContext();
 
   return useMutation<CreateAccountResponse, Error, CreateAccountPayload>({
     mutationFn: async (payload: CreateAccountPayload) => {
@@ -17,7 +17,7 @@ export function useCreateAccount() {
     },
     onSuccess: (data) => {
       // Set success message in context
-      setSuccessMessage(data.message);
+      setCreatedAccount(data.account);
       
       // Navigate to homepage
       navigate({ to: '/', replace: true });
